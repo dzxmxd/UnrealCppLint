@@ -4372,6 +4372,13 @@ def CheckBraces(filename, clean_lines, linenum, error):
   elif re.search(r'}\s*else[^{]*$', line) or (re.match(r'[^}]*else\s*{', line) and not last_wrong):
     error(filename, linenum, 'readability/braces', 5,
           'If an else has a brace on one side, it should have it on both')
+  
+  # Unreal: Always include braces in single-statement blocks.
+  if re.search(r'^\s*(if|for|while|else)\s*\(.*\)\s*$', line):
+    next_line = clean_lines.elided[linenum + 1].strip() if linenum + 1 < len(clean_lines.elided) else ''
+    if not re.match(r'^\s*{', next_line):
+      error(filename, linenum, 'readability/braces', 4,
+            'Single statement blocks should use braces')
 
   # No control clauses with braces should have its contents on the same line
   # Exclude } which will be covered by empty-block detect
