@@ -4949,6 +4949,10 @@ def CheckStyle(filename, clean_lines, linenum, file_extension, nesting_state,
     error(filename, linenum, 'whitespace/indent', 3,
           'Weird number of spaces at line-start.  '
           'Are you using a 2-space indent?')
+  # Unreal: Use tabs, not spaces, for whitespace at the beginning of a line.
+  if re.match(r'^[ \t]* ', line):
+    error(filename, linenum, 'whitespace/indent', 1,
+          'Use tab for indentation instead of spaces.')
 
   if line and line[-1].isspace():
     error(filename, linenum, 'whitespace/end_of_line', 4,
