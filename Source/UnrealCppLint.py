@@ -4348,6 +4348,11 @@ def CheckBraces(filename, clean_lines, linenum, error):
         not re.search(r'\{[^{}]*\}', line)):
       error(filename, linenum, 'whitespace/braces', 4,
             '{ should always be on a new line')
+
+  # Unreal: Make sure else in a new line.
+  if re.search(r'}[ \s]*else', line):
+    error(filename, linenum, 'whitespace/braces', 5,
+          'else should always be on a new line')
   
   # Unreal: Always include braces in single-statement blocks.
   if re.search(r'^\s*(if|for|while|else)\s*\(.*\)\s*$', line):
