@@ -4345,7 +4345,7 @@ def CheckBraces(filename, clean_lines, linenum, error):
             '{ should always be on a new line')
 
   # Unreal: Make sure else in a new line.
-  if re.search(r'}[ \s]*else', line):
+  if re.search(r'}[\s]*else', line):
     error(filename, linenum, 'whitespace/braces', 5,
           'else should always be on a new line')
   
