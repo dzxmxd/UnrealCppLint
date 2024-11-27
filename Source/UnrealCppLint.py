@@ -4914,46 +4914,12 @@ def CheckStyle(filename, clean_lines, linenum, file_extension, nesting_state,
   line = raw_lines[linenum]
   prev = raw_lines[linenum - 1] if linenum > 0 else ''
 
-  if line.find('\t') != -1:
-    error(filename, linenum, 'whitespace/tab', 1,
-          'Tab found; better to use spaces')
-
-  # One or three blank spaces at the beginning of the line is weird; it's
-  # hard to reconcile that with 2-space indents.
-  # NOTE: here are the conditions rob pike used for his tests.  Mine aren't
-  # as sophisticated, but it may be worth becoming so:  RLENGTH==initial_spaces
-  # if(RLENGTH > 20) complain = 0;
-  # if(match($0, " +(error|private|public|protected):")) complain = 0;
-  # if(match(prev, "&& *$")) complain = 0;
-  # if(match(prev, "\\|\\| *$")) complain = 0;
-  # if(match(prev, "[\",=><] *$")) complain = 0;
-  # if(match($0, " <<")) complain = 0;
-  # if(match(prev, " +for \\(")) complain = 0;
-  # if(prevodd && match(prevprev, " +for \\(")) complain = 0;
-  scope_or_label_pattern = r'\s*(?:public|private|protected|signals)(?:\s+(?:slots\s*)?)?:\s*\\?$'
-  classinfo = nesting_state.InnermostClass()
-  initial_spaces = 0
-  cleansed_line = clean_lines.elided[linenum]
-  while initial_spaces < len(line) and line[initial_spaces] == ' ':
-    initial_spaces += 1
-  # There are certain situations we allow one space, notably for
-  # section labels, and also lines containing multi-line raw strings.
-  # We also don't check for lines that look like continuation lines
-  # (of lines ending in double quotes, commas, equals, or angle brackets)
-  # because the rules for how to indent those are non-trivial.
-  if (not re.search(r'[",=><] *$', prev) and
-      (initial_spaces == 1 or initial_spaces == 3) and
-      not re.match(scope_or_label_pattern, cleansed_line) and
-      not (clean_lines.raw_lines[linenum] != line and
-           re.match(r'^\s*""', line))):
-    error(filename, linenum, 'whitespace/indent', 3,
-          'Weird number of spaces at line-start.  '
-          'Are you using a 2-space indent?')
   # Unreal: Use tabs, not spaces, for whitespace at the beginning of a line.
   if re.match(r'^[ \t]* ', line):
     error(filename, linenum, 'whitespace/indent', 1,
           'Use tab for indentation instead of spaces.')
 
+  cleansed_line = clean_lines.elided[linenum]
   if line and line[-1].isspace():
     error(filename, linenum, 'whitespace/end_of_line', 4,
           'Line ends in whitespace.  Consider deleting these extra spaces.')
