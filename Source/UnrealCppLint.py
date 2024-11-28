@@ -5899,6 +5899,11 @@ def CheckCStyleCast(filename, clean_lines, linenum, cast_type, pattern, error):
            remainder):
     return False
   
+  # Unreal: Ignore unnamed input parameters
+  # like: void UActorModifierCoreStack::OnActorDestroyed(AActor*)
+  if re.search(r'\b[a-zA-Z_]\w*\s*(::\s*[a-zA-Z_]\w*)?\s*\([^)]*\)\s*$', line):
+    return False
+  
   # Unreal: Ignore lambda event binding
   # like: FEditorDelegates::BeginPIE.AddLambda([](bool)
   lambda_pattern = r'\[.*\]\s*\([^)]*\)\s*\{?'
