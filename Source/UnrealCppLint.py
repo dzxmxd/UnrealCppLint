@@ -4155,16 +4155,9 @@ def CheckBracesSpacing(filename, clean_lines, linenum, nesting_state, error):
   """
   line = clean_lines.elided[linenum]
 
-  # Except after an opening paren, or after another opening brace (in case of
-  # an initializer list, for instance), you should have spaces before your
-  # braces when they are delimiting blocks, classes, namespaces etc.
-  # And since you should never have braces at the beginning of a line,
-  # this is an easy test.  Except that braces used for initialization don't
-  # follow the same rule; we often don't want spaces before those.
-  # Unreal: Add start with '\s' case here,
+  # Unreal: We only detect spaces when matching single line braces
   # in a new line we don't care weather the previous line end with a spaces.
-  # Keep this detection as there is a possibility of matching in the constructor
-  match = re.match(r'^(.*[^ ({>\s]){', line)
+  match = re.match(r'^(.*[^ ({>\s]){.*}', line)
 
   if match:
     # Try a bit harder to check for brace initialization.  This
