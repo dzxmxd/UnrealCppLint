@@ -3291,32 +3291,6 @@ class NestingState(object):
     if not self.SeenOpenBrace():
       self.stack[-1].CheckBegin(filename, clean_lines, linenum, error)
 
-    # Update access control if we are inside a class/struct
-    if self.stack and isinstance(self.stack[-1], _ClassInfo):
-      classinfo = self.stack[-1]
-      access_match = re.match(
-          r'^(.*)\b(public|private|protected|signals)(\s+(?:slots\s*)?)?'
-          r':(?:[^:]|$)',
-          line)
-      if access_match:
-        classinfo.access = access_match.group(2)
-
-        # Check that access keywords are indented +1 space.  Skip this
-        # check if the keywords are not preceded by whitespaces.
-        indent = access_match.group(1)
-        if (len(indent) != classinfo.class_indent + 1 and
-            re.match(r'^\s*$', indent)):
-          if classinfo.is_struct:
-            parent = 'struct ' + classinfo.name
-          else:
-            parent = 'class ' + classinfo.name
-          slots = ''
-          if access_match.group(3):
-            slots = access_match.group(3)
-          error(filename, linenum, 'whitespace/indent', 3,
-                f'{access_match.group(2)}{slots}:'
-                f' should be indented +1 space inside {parent}')
-
     # Consume braces or semicolons from what's left of the line
     while True:
       # Match first brace, semicolon, or closed parenthesis.
