@@ -6391,8 +6391,8 @@ def ProcessLine(filename, file_extension, clean_lines, line,
   raw_lines = clean_lines.raw_lines
   ParseNolintSuppressions(filename, raw_lines[line], line, error)
   nesting_state.Update(filename, clean_lines, line, error)
-  CheckForNamespaceIndentation(filename, nesting_state, clean_lines, line,
-                               error)
+  # Unreal: The existing practice uses indentation in the namespace, so comment here
+  # CheckForNamespaceIndentation(filename, nesting_state, clean_lines, line, error)
   if nesting_state.InAsmBlock(): return
   CheckForFunctionLengths(filename, clean_lines, line, function_state, error)
   CheckForMultilineCommentsAndStrings(filename, clean_lines, line, error)
