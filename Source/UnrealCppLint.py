@@ -5898,6 +5898,12 @@ def CheckCStyleCast(filename, clean_lines, linenum, cast_type, pattern, error):
   if re.match(r'^\s*(?:;|const\b|throw\b|final\b|override\b|[=>{),]|->)',
            remainder):
     return False
+  
+  # Unreal: Ignore lambda event binding
+  # like: FEditorDelegates::BeginPIE.AddLambda([](bool)
+  lambda_pattern = r'\[.*\]\s*\([^)]*\)\s*\{?'
+  if re.search(lambda_pattern, line):
+    return False
 
   # At this point, all that should be left is actual casts.
   error(filename, linenum, 'readability/casting', 4,
