@@ -4316,12 +4316,19 @@ def CheckBraces(filename, clean_lines, linenum, error):
   
   # Unreal: Always include braces in single-statement blocks.
   if re.search(r'^\s*(if|for|while|else)\s*\(.*\)\s*$', line):
-    next_line = clean_lines.elided[linenum + 1].strip() if linenum + 1 < len(clean_lines.elided) else ''
+    control_line = line.strip()
+    control_line_num = linenum
+    # Unreal: Control statement conditions may span multiple lines.
+    while control_line.count('(') != control_line.count(')') and control_line_num + 1 < len(clean_lines.elided):
+      control_line_num += 1
+      control_line += ' ' + clean_lines.elided[control_line_num].strip()
+      
+    next_line = clean_lines.elided[control_line_num + 1].strip() if control_line_num + 1 < len(clean_lines.elided) else ''
     if IsBlankLine(next_line):
-      error(filename, linenum, 'whitespace/blank_line', 2,
+      error(filename, control_line_num + 1, 'whitespace/blank_line', 2,
             'Redundant blank line after control statement')
-    elif not re.match(r'^\s*{', next_line):
-      error(filename, linenum, 'readability/braces', 4,
+    elif not re.match(r'^\s*{', next_line) and not re.match(r'.*{\s*$', control_line):
+      error(filename, control_line_num + 1, 'readability/braces', 4,
             'Single statement blocks should use braces')
 
   # No control clauses with braces should have its contents on the same line
