@@ -4343,7 +4343,10 @@ def CheckBraces(filename, clean_lines, linenum, error):
   # Unreal: Always include braces in single-statement blocks.
   if re.search(r'^\s*(if|for|while|else)\s*\(.*\)\s*$', line):
     next_line = clean_lines.elided[linenum + 1].strip() if linenum + 1 < len(clean_lines.elided) else ''
-    if not re.match(r'^\s*{', next_line):
+    if IsBlankLine(next_line):
+      error(filename, linenum, 'whitespace/blank_line', 2,
+            'Redundant blank line after control statement')
+    elif not re.match(r'^\s*{', next_line):
       error(filename, linenum, 'readability/braces', 4,
             'Single statement blocks should use braces')
 
