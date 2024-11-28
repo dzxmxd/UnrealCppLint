@@ -3717,16 +3717,14 @@ def CheckComment(line, filename, linenum, next_line_start, error):
   """
   commentpos = line.find('//')
   if commentpos != -1:
-    # Check if the // may be in quotes.  If so, ignore it
+    # Unreal: Changed the two space detections between code and comments to one.
     if re.sub(r'\\.', '', line[0:commentpos]).count('"') % 2 == 0:
       # Allow one space for new scopes, two spaces otherwise:
       if (not (re.match(r'^.*{ *//', line) and next_line_start == commentpos) and
           ((commentpos >= 1 and
-            line[commentpos-1] not in string.whitespace) or
-           (commentpos >= 2 and
-            line[commentpos-2] not in string.whitespace))):
+            line[commentpos-1] not in string.whitespace))):
         error(filename, linenum, 'whitespace/comments', 2,
-              'At least two spaces is best between code and comments')
+              'At least one spaces is best between code and comments')
 
       # Checks for common mistakes in TODO comments.
       comment = line[commentpos:]
