@@ -6406,8 +6406,9 @@ def ProcessLine(filename, file_extension, clean_lines, line,
   CheckPosixThreading(filename, clean_lines, line, error)
   CheckInvalidIncrement(filename, clean_lines, line, error)
   CheckMakePairUsesDeduction(filename, clean_lines, line, error)
-  CheckRedundantVirtual(filename, clean_lines, line, error)
-  CheckRedundantOverrideOrFinal(filename, clean_lines, line, error)
+  # Unreal: The override and final keywords are valid for use, and their use is strongly encouraged.
+  # CheckRedundantVirtual(filename, clean_lines, line, error)
+  # CheckRedundantOverrideOrFinal(filename, clean_lines, line, error)
   if extra_check_functions:
     for check_fn in extra_check_functions:
       check_fn(filename, clean_lines, line, error)
