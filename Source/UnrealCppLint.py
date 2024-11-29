@@ -4315,7 +4315,7 @@ def CheckBraces(filename, clean_lines, linenum, error):
           'else should always be on a new line')
   
   # Unreal: Always include braces in single-statement blocks.
-  if re.search(r'^\s*(if|for|while|else)\s*\(.*\)\s*$', line):
+  if re.search(r'^\s*(if|for|while|else if)\s*\(.*\)\s*|^\s*else\s*$', line):
     control_line = line.strip()
     control_line_num = linenum
     # Unreal: Control statement conditions may span multiple lines.
