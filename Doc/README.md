@@ -3,7 +3,7 @@
 [Unreal 代码规范](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine)
 [Google 代码规范](https://zh-google-styleguide.readthedocs.io/en/latest/index.html)
 
-## 新增说明
+## 一、新增说明
 
 ### 1. 花括号单独新行
 
@@ -39,7 +39,7 @@
     while control_line.count('(') != control_line.count(')') and control_line_num + 1 < len(clean_lines.elided):
       control_line_num += 1
       control_line += ' ' + clean_lines.elided[control_line_num].strip()
-    
+  
     next_line = clean_lines.elided[control_line_num + 1].strip() if control_line_num + 1 < len(clean_lines.elided) else ''
     if IsBlankLine(next_line):
       error(filename, control_line_num + 1, 'whitespace/blank_line', 2,
@@ -80,7 +80,6 @@
           'Use tab for indentation instead of spaces.')
 ```
 
-
 ### 5. 单行大括号匹配时空格检测
 
 UE 中存在很多的函数在一行完成，比如 Set、Get 方法、构造、析构等，这里我们保留一个单行匹配时 { 前需要空格的检测。
@@ -90,7 +89,6 @@ UE 中存在很多的函数在一行完成，比如 Set、Get 方法、构造、
   # in a new line we don't care weather the previous line end with a spaces.
   match = re.match(r'^(.*[^ ({>\s]){.*}', line)
 ```
-
 
 ### 6. 代码注释间空格检测
 
@@ -204,8 +202,6 @@ UE 推荐使用此类关键字，并且说明了目前代码中缺少的部分�
   # CheckRedundantOverrideOrFinal(filename, clean_lines, line, error)
 ```
 
-
-
 ### 4. 命名空间不应缩进的检测
 
 在 UE 代码实践中，命名空间与类规则类似，并没有不应缩进的实践，因此移除了这一检测
@@ -307,7 +303,7 @@ UE 推荐使用此类关键字，并且说明了目前代码中缺少的部分�
 ## 三、其他说明
 
 原生 cpplint 的功能基本没有调整，只是将相关的规范改为了 UE 的标准规范
-有一些规则原则上也可以删除掉，但笔者这里没有考虑处理，业务如果需要，可以自行修改或使用 filter 筛选掉，比如 public 后不能跟空格、右小括号不换行、meta = 等于前后要加空格这种，很多引擎代码中也没有统一的规范，由项目、业务去决定如何处理吧。一个项目组的代码规范，由项目组自己拍板就可以了，核心还是要保证代码风格的一致性、可读性，以期更高的可维护性。
+有一些规则原则上也可以删除掉，但笔者这里没有考虑处理，业务如果需要，可以自行修改或使用 filter 筛选掉，比如 public 后不能跟空行、右小括号不换行、meta = 等于前后要加空格这种，很多引擎代码中也没有统一的规范，由项目、业务去决定如何处理吧。一个项目组的代码规范，由项目组自己拍板就可以了，核心还是要保证代码风格的一致性、可读性，以期更高的可维护性。
 
 后续可能也会考虑添加一些 UE 独有的规范，就先放到 TODO 里了，目前基本足够使用了。
 
