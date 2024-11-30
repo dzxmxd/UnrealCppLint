@@ -1,0 +1,1 @@
+pyinstaller ./Source/UnrealCppLint.py -F -i=".\Resources\UnrealCppLintIcon.ico"
