@@ -213,7 +213,22 @@ UE 推荐使用此类关键字，并且说明了目前代码中缺少的部分�
   # CheckForNamespaceIndentation(filename, nesting_state, clean_lines, line, error)
 ```
 
-### 5. 新增中涉及到的
+### 5. 右括号在新行时的检测
+
+目前的代码实践中，很多左右括号往往在多行并按列对齐，故删除此检测。
+
+删除了如下内容：原始 else 逻辑改为 not 条件 时执行
+
+```Python
+      # If the closing parenthesis is preceded by only whitespaces,
+      # try to give a more descriptive error message.
+      if re.search(r'^\s+\)', fncall):
+        error(filename, linenum, 'whitespace/parens', 2,
+              'Closing ) should be moved to the previous line')
+      else:
+```
+
+### 6. 新增中涉及到的
 
 原生 cpplint 检测是否有使用 tab 缩进，以及是否存在非 2、4 个空格缩进的情况，移除这一检测。
 
