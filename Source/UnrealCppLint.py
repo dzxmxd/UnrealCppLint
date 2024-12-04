@@ -3569,12 +3569,8 @@ def CheckSpacingForFunctionCall(filename, clean_lines, linenum, error):
     # If the ) is followed only by a newline or a { + newline, assume it's
     # part of a control statement (if/while/etc), and don't complain
     if re.search(r'[^)]\s+\)\s*[^{\s]', fncall):
-      # If the closing parenthesis is preceded by only whitespaces,
-      # try to give a more descriptive error message.
-      if re.search(r'^\s+\)', fncall):
-        error(filename, linenum, 'whitespace/parens', 2,
-              'Closing ) should be moved to the previous line')
-      else:
+      # Unreal: Ignore the case of closing parenthesis on a new line
+      if not re.search(r'^\s+\)', fncall):
         error(filename, linenum, 'whitespace/parens', 2,
               'Extra space before )')
 
